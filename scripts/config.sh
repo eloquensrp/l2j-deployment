@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 default_source_dir="../config/game"
 default_target_dir="../current/game/config"
@@ -10,8 +10,8 @@ echo "> Applying configuration overrides..."
 echo ""
 
 trim_ws() {
-  local input="$1"
-  local trimmed=$(echo "$input" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+  input="$1"
+  trimmed=$(echo "$input" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
   echo "$trimmed"
 }
 
@@ -23,18 +23,18 @@ for source_config in "$source_dir"/*; do
   echo "$source_file"
   echo "---------------------------------"
 
-  if [[ -f "$target_config" ]]; then
+  if [ -f "$target_config" ]; then
     changes=0
     while IFS='=' read -r field value; do
-      if [[ $field =~ ^\s*# ]] || [[ -z $field ]]; then
+      if echo "$field" | grep -E "^\s*#" >/dev/null || [ -z "$field" ]; then
         continue
       fi
 
-      field=$(trim_ws $field)
-      value=$(trim_ws $value)
+      field=$(trim_ws "$field")
+      value=$(trim_ws "$value")
 
-      found=$(grep -E "^[^#]*$field\s*=" $target_config)
-      if [[ ! -n $found ]]; then
+      found=$(grep -E "^[^#]*$field\s*=" "$target_config")
+      if [ -z "$found" ]; then
         echo "$field missing on target config"
         continue
       fi
@@ -45,7 +45,7 @@ for source_config in "$source_dir"/*; do
       echo "$field >> $value"
     done < "$source_config"
 
-    if [ $changes -eq 0 ]; then
+    if [ "$changes" -eq 0 ]; then
       echo "No changes found on $source_config."
     else
       echo "Modified $target_config."
