@@ -67,7 +67,7 @@ WIP
 - [ ] Syncing changes
 - [ ] Server management
 
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/eloquensrp/l2j-deployment/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
