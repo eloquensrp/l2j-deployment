@@ -11,7 +11,7 @@ echo ""
 
 trim_ws() {
   input="$1"
-  trimmed=$(echo "$input" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+  trimmed=$(echo "$input" | awk '{$1=$1};1')
   echo "$trimmed"
 }
 
@@ -20,6 +20,7 @@ for source_config in "$source_dir"/*; do
   source_file=$(basename "$source_config")
   target_config="$target_dir/$source_file"
 
+  echo "---------------------------------"
   echo "$source_file"
   echo "---------------------------------"
 
@@ -39,20 +40,21 @@ for source_config in "$source_dir"/*; do
         continue
       fi
 
-      sed -i "s/${field}\s*=\s*.*/${field} = ${value}/" "$target_config"
+      sfield=$(echo "$field" | sed 's/[\/&]/\\&/g')
+      svalue=$(echo "$value" | sed 's/[\/&]/\\&/g')
+      sed -i "s/${sfield}\s*=\s*.*/${sfield} = ${svalue}/" "$target_config"
 
       changes=$((changes + 1))
-      echo "$field >> $value"
+      echo "$field = $value"
     done < "$source_config"
 
     if [ "$changes" -eq 0 ]; then
-      echo "No changes found on $source_config."
-    else
-      echo "Modified $target_config."
+      echo "No changes found."
     fi
   else
     echo "Target config file $target_config not found."
   fi
+  echo "..."
   echo ""
 done
 
