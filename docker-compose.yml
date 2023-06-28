@@ -16,12 +16,12 @@ services:
   db:
     image: mariadb:11.0.2
     environment:
-      MARIADB_ROOT_PASSWORD: testrootpwd
-      MARIADB_DATABASE: eloquens_db
-      MARIADB_USER: eloquens
-      MARIADB_PASSWORD: testuserpwd
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_USER: ${DB_USER}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
     healthcheck:
-      test: mariadb --user eloquens --password=testuserpwd -e "SELECT 1" 2>/dev/null
+      test: mariadb --user ${DB_USER} --password=${DB_PASSWORD} -e "SELECT 1" 2>/dev/null
       interval: 10s
       timeout: 5s
       retries: 10
