@@ -48,9 +48,9 @@ services:
     ports:
       - 2106:2106/tcp
     volumes:
-      - ./release/RELEASE}/login:/opt/server/login
-      - ./logs/login:/opt/server/login/log
       - ./release/${RELEASE}/libs:/opt/server/libs
+      - ./release/${RELEASE}/login:/opt/server/login
+      - ./logs/login:/opt/server/login/log
 
   # GameServer
   game:
@@ -72,6 +72,7 @@ services:
     ports:
       - 7777:7777/tcp
     volumes:
-      - ./release/${RELEASE}/game:/opt/server/game
-      - ./logs/game:/opt/server/game/log
       - ./release/${RELEASE}/libs:/opt/server/libs
+      - ./release/${RELEASE}/game:/opt/server/game
+      - ./geodata/geodata:/opt/server/game/data/shared_geodata
+      - ./logs/game:/opt/server/game/log
